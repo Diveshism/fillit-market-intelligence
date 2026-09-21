@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ *
+ * Design tokens — FILLIT brand specification
+ * (handoff Appendix C, mirrored in fillit_dataset.json → summary.brand)
+ * ------------------------------------------------------------------ */
+
+:root {
+  --red: #c91e2c;
+  --red-wash: #fff1f2;
+  --ink: #242126;
+  --graphite: #3d4650;
+  --paper: #f6f4f1;
+  --steel: #41616f;
+  --sand: #c9b89c;
+  --hairline: #d8d3cc;
+
+  --hot: #2e7d4f;
+  --warm: #7ba05b;
+  --cold: #b8c4a8;
+  --appointment: #d4a537;
+  --revisit: #d07c2e;
+  --invalid: #b33a3a;
+
+  --shell: 88rem;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-inter), 'Source Sans 3', system-ui, sans-serif;
+    font-feature-settings: 'tnum' 1, 'cv05' 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Tabular figures everywhere a number can appear — brand spec B.2. */
+  .tnum,
+  table,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-archivo), 'Libre Franklin', Barlow, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, on-brand focus ring for full keyboard navigation. */
+  :focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--red);
+    color: var(--paper);
+  }
+}
+
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Small uppercase label above a headline — brand spec B.2 "eyebrow". */
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--graphite);
+  }
+
+  .eyebrow-rule::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 3px;
+    margin-top: 0.625rem;
+    background: var(--red);
+  }
+
+  .display {
+    font-family: var(--font-archivo), 'Libre Franklin', Barlow, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+
+  .source-line {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--graphite) 70%, transparent);
+  }
+
+  /* Takeaway band under a chart — the gain stated in one sentence. */
+  .takeaway {
+    border-left: 4px solid var(--hot);
+    background: var(--red-wash);
+    padding: 1rem 1.25rem;
+  }
+
+  .hairline-rule {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .on-ink {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .on-ink .eyebrow,
+  .on-ink .source-line {
+    color: color-mix(in srgb, var(--paper) 62%, transparent);
+  }
+
+  .on-ink .hairline-rule {
+    border-color: color-mix(in srgb, var(--paper) 18%, transparent);
+  }
+
+  /* Full-bleed photography carries a 55% ink scrim — brand spec B.3. */
+  .photo-scrim::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgb(36 33 38 / 0.92) 0%,
+      rgb(36 33 38 / 0.55) 45%,
+      rgb(36 33 38 / 0.12) 100%
+    );
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion
+ * ------------------------------------------------------------------ */
+
+/* Scene loading skeleton — see components/three/SceneShell.tsx */
+@keyframes sceneslide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Print — produces a clean PDF of any route
+ * ------------------------------------------------------------------ */
+
+@media print {
+  :root {
+    --paper: #ffffff;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 10pt;
+  }
+
+  .no-print,
+  nav,
+  canvas,
+  [data-scene] {
+    display: none !important;
+  }
+
+  .on-ink {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .shell {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    color: #555;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
