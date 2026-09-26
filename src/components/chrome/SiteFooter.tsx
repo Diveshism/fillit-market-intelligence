@@ -13,7 +13,7 @@ export default function SiteFooter() {
               {num(summary.companies)} companies visited across the UAE industrial corridors.
             </p>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-paper/70">
-              A six-week field research programme for {meta.company}, {meta.field_period}.
+              A seven-week field research programme for {meta.company}, {meta.field_period}.
               {' '}{num(summary.field_visits)} in-person visits, every company classified.
             </p>
           </div>
@@ -24,7 +24,7 @@ export default function SiteFooter() {
               <li><Link className="hover:text-paper" href="/volume">Where the litres are</Link></li>
               <li><Link className="hover:text-paper" href="/competition">Competitor landscape</Link></li>
               <li><Link className="hover:text-paper" href="/new-leads">New leads generated</Link></li>
-              <li><Link className="hover:text-paper" href="/barriers">The blocked 90</Link></li>
+              <li><Link className="hover:text-paper" href="/barriers">The blocked 100</Link></li>
               <li><Link className="hover:text-paper" href="/pain-points">What buyers told us</Link></li>
             </ul>
           </div>

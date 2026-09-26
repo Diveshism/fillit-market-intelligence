@@ -13,14 +13,14 @@ import { num, pct } from '@/lib/format';
 export const metadata: Metadata = {
   title: 'What buyers told us',
   description:
-    'Every major pain point appears only beside a live lead. Decision makers, buying behaviour and verbatim objections from 651 field visits.',
+    'Every major pain point appears only beside a live lead. Decision makers, buying behaviour and verbatim objections from 743 field visits.',
 };
 
 const SEVERITY_COLOUR: Record<string, string> = {
-  Major: '#C91E2C',
-  'High value': '#2E7D4F',
-  Moderate: '#41616F',
-  Isolated: '#C9B89C',
+  Major: '#8D2635',
+  'High value': '#05AF52',
+  Moderate: '#6B7076',
+  Isolated: '#C6C6C6',
 };
 
 export default function PainPointsPage() {
@@ -69,7 +69,7 @@ export default function PainPointsPage() {
                     <td className="tnum py-3.5 pr-4 text-right text-graphite">{p.hot}</td>
                     <td className="tnum py-3.5 pr-4 text-right text-graphite">{p.warm}</td>
                     <td className="tnum py-3.5 pr-4 text-right text-graphite">{p.cold}</td>
-                    <td className="tnum py-3.5 pr-4 text-right font-600 text-[#2E7D4F]">{p.green}%</td>
+                    <td className="tnum py-3.5 pr-4 text-right font-600 text-[#05AF52]">{p.green}%</td>
                     <td className="py-3.5 text-right">
                       <span
                         className="rounded-[3px] border px-2 py-[3px] text-[0.625rem] font-600 uppercase tracking-[0.08em]"

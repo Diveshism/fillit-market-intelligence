@@ -46,7 +46,7 @@ export default function Hero({
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(to top, rgb(36 33 38 / 0.98) 18%, rgb(36 33 38 / 0.88) 48%, rgb(36 33 38 / 0.68) 100%)',
+              'linear-gradient(to top, rgb(26 26 26 / 0.98) 18%, rgb(26 26 26 / 0.88) 48%, rgb(26 26 26 / 0.68) 100%)',
           }}
         />
       </div>
@@ -106,7 +106,7 @@ export default function Hero({
           <div className="mt-12 flex flex-wrap gap-4">
             <Link
               href="/companies"
-              className="inline-flex items-center gap-2 bg-red px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:bg-[#a81824]"
+              className="inline-flex items-center gap-2 bg-red px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:bg-[#6e1c28]"
             >
               Open the database
             </Link>

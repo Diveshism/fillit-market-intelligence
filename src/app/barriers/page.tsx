@@ -12,7 +12,7 @@ import { num, pct } from '@/lib/format';
 export const metadata: Metadata = {
   title: 'The barrier nobody has priced',
   description:
-    '90 companies are blocked by free-zone entry, appointment protocols and gate passes — solvable with administration rather than more visits.',
+    '100 companies are blocked by free-zone entry, appointment protocols and gate passes — solvable with administration rather than more visits.',
 };
 
 export default function BarriersPage() {
@@ -23,8 +23,8 @@ export default function BarriersPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Finding 05 · The barrier nobody has priced"
-        title="90 companies are blocked, not disqualified."
+        eyebrow="The barrier nobody has priced"
+        title="100 companies are blocked, not disqualified."
         standfirst="Free zone entry, appointment protocols and gate passes. All solvable with administration rather than more visits."
         confidence="VERIFIED"
       />
@@ -41,7 +41,7 @@ export default function BarriersPage() {
                       <span className="text-[1.0625rem] font-600 text-ink">{b.barrier}</span>
                       <span className="tnum shrink-0 text-[1.0625rem] font-600 text-red">{b.companies}</span>
                     </div>
-                    <GrowBar className="mt-2.5" value={(b.companies / maxBarrier) * 100} color="#D4A537" delay={i * 0.1} />
+                    <GrowBar className="mt-2.5" value={(b.companies / maxBarrier) * 100} color="#E0A020" delay={i * 0.1} />
                     <p className="mt-2 text-[0.875rem] leading-relaxed text-graphite">{b.needed}</p>
                   </StaggerItem>
                 ))}
@@ -50,7 +50,7 @@ export default function BarriersPage() {
               <SourceLine>{BARRIER_NOTE}</SourceLine>
             </div>
 
-            <div className="self-start border border-hairline bg-white/45 p-7">
+            <div className="self-start border border-hairline bg-wash p-7">
               <p className="eyebrow">Jebel Ali / JAFZA</p>
               <p className="display tnum mt-5 text-[clamp(3rem,7vw,4.5rem)] leading-none text-red">
                 <CountUp to={JEBEL_ALI.blocked} />
@@ -100,14 +100,14 @@ export default function BarriersPage() {
           <dl className="grid grid-cols-2 gap-x-8 gap-y-8 border-t border-hairline pt-8 md:grid-cols-4">
             <div>
               <dt className="eyebrow">Appointment needed</dt>
-              <dd className="display tnum mt-2.5 text-[2.25rem] leading-none text-[#D4A537]">
+              <dd className="display tnum mt-2.5 text-[2.25rem] leading-none text-[#E0A020]">
                 <CountUp to={summary.appointment} />
               </dd>
               <p className="source-line mt-1">could not get in</p>
             </div>
             <div>
               <dt className="eyebrow">Revisit</dt>
-              <dd className="display tnum mt-2.5 text-[2.25rem] leading-none text-[#D07C2E]">
+              <dd className="display tnum mt-2.5 text-[2.25rem] leading-none text-[#D9772B]">
                 <CountUp to={summary.revisit} />
               </dd>
               <p className="source-line mt-1">process stopped, company did not</p>
@@ -123,7 +123,7 @@ export default function BarriersPage() {
             </div>
             <div>
               <dt className="eyebrow">Confirmed diesel users</dt>
-              <dd className="display tnum mt-2.5 text-[2.25rem] leading-none text-[#2E7D4F]">
+              <dd className="display tnum mt-2.5 text-[2.25rem] leading-none text-[#05AF52]">
                 <CountUp to={summary.diesel_users} />
               </dd>
               <p className="source-line mt-1">for comparison</p>

@@ -42,7 +42,7 @@ export default function HomePage() {
         <Reveal>
           <SectionHeading
             eyebrow="The market we mapped"
-            title="568 companies, every one classified."
+            title="636 companies, every one classified."
             standfirst={`${num(summary.field_visits)} field visits resolved to ${num(total)} unique companies. Each is shown at its latest status. Select any band to open its companies.`}
             confidence="VERIFIED"
           />
@@ -50,7 +50,7 @@ export default function HomePage() {
 
           <div className="mt-12 grid gap-10 border-t border-hairline pt-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
             <div>
-              <p className="eyebrow">The addressable pool is not 157</p>
+              <p className="eyebrow">The addressable pool is not {num(summary.diesel_users)}</p>
               <p className="display mt-6 text-[clamp(3rem,9vw,6rem)] leading-none text-red">
                 <CountUp to={summary.blocked_or_unresolved} />
               </p>
@@ -112,7 +112,7 @@ export default function HomePage() {
         </div>
 
         {FINDINGS.map((f, i) => (
-          <article key={f.slug} className={`border-t border-hairline ${i % 2 === 1 ? 'bg-white/35' : ''}`}>
+          <article key={f.slug} className={`border-t border-hairline ${i % 2 === 1 ? 'bg-wash' : ''}`}>
             <div className="shell grid gap-8 py-14 lg:grid-cols-[5rem_1fr_auto] lg:gap-12 lg:py-16">
               <p className="display tnum text-[2.5rem] leading-none text-red">{f.n}</p>
 
@@ -188,8 +188,9 @@ export default function HomePage() {
           />
           <WeeklyProgress weekly={weekly} />
           <Takeaway>
-            Weeks 2 to 5, when we generated our own leads, ran at 19% to 30% dead ends. Week 6 was
-            mostly revisits and gated sites.
+            From Week 2 the dead-end rate held between 19% and 30%. Week 6 spiked to 46.1% on
+            revisits and gated sites; Week 7 recovered to 29.3% on our largest weekly batch of
+            self-generated leads.
           </Takeaway>
         </Reveal>
       </section>
@@ -204,7 +205,7 @@ export default function HomePage() {
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Link
               href="/companies"
-              className="inline-flex items-center gap-2 bg-red px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:bg-[#a81824]"
+              className="inline-flex items-center gap-2 bg-red px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:bg-[#6e1c28]"
             >
               Open the database
             </Link>

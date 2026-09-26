@@ -10,7 +10,7 @@ import { num, pct } from '@/lib/format';
 export const metadata: Metadata = {
   title: 'Company database',
   description:
-    'All 568 companies visited, searchable and filterable by status, industry, area and lead source.',
+    'All 636 companies visited, searchable and filterable by status, industry, area and lead source.',
 };
 
 export default function CompaniesPage({
@@ -25,9 +25,9 @@ export default function CompaniesPage({
       <PageHeader
         eyebrow="The database"
         title="Every company we visited, in one place."
-        standfirst={`All ${num(total)} companies at their latest status. ${num(
-          summary.visited_more_than_once,
-        )} were visited more than once, and ${num(summary.status_changed)} changed status between visits.`}
+        standfirst={`All ${num(total)} companies at their latest status, from ${num(
+          summary.field_visits,
+        )} field visits — ${num(summary.visited_more_than_once)} of them were visited more than once.`}
         confidence="VERIFIED"
       />
 
@@ -56,7 +56,7 @@ export default function CompaniesPage({
                     </div>
                     <p
                       className="display tnum mt-3 text-[2.75rem] leading-none"
-                      style={{ color: STATUS_COLOR[status] === '#B8C4A8' ? '#7d8a6d' : STATUS_COLOR[status] }}
+                      style={{ color: STATUS_COLOR[status] === '#A9DCC0' ? '#6fbf8f' : STATUS_COLOR[status] }}
                     >
                       {num(n)}
                     </p>

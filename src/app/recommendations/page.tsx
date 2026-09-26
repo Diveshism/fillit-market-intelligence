@@ -7,7 +7,7 @@ import { ConfidenceBadge } from '@/components/ui/Badges';
 export const metadata: Metadata = {
   title: 'Recommendations',
   description:
-    'Five recommendations, six things ready to implement this week, and a three-month action plan built for the commercial team.',
+    'Five recommendations, six things ready to implement this month, and a growth plan built for the commercial team.',
 };
 
 export default function RecommendationsPage() {
@@ -82,7 +82,7 @@ export default function RecommendationsPage() {
               href="/companies/hot"
               className="inline-flex items-center gap-2 border border-ink px-4 py-2 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-ink transition-colors hover:bg-ink hover:text-paper"
             >
-              Open the 23 Hot leads
+              Open the 27 Hot leads
             </Link>
             <Link
               href="/competition"

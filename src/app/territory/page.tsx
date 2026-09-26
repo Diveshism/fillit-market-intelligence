@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 };
 
 const ACTION_STYLE: Record<string, { label: string; colour: string }> = {
-  work: { label: 'Work it', colour: '#2E7D4F' },
-  unlock: { label: 'Unlock it', colour: '#D4A537' },
-  stop: { label: 'Stop visiting', colour: '#C91E2C' },
+  work: { label: 'Work it', colour: '#05AF52' },
+  unlock: { label: 'Unlock it', colour: '#E0A020' },
+  stop: { label: 'Stop visiting', colour: '#8D2635' },
 };
 
 export default function TerritoryPage() {
@@ -86,7 +86,7 @@ export default function TerritoryPage() {
                     <td className="tnum py-3.5 pr-4 text-right text-graphite">{z.self_generated || '—'}</td>
                     <td
                       className="tnum py-3.5 text-right font-600"
-                      style={{ color: z.green_rate >= 40 ? '#2E7D4F' : '#3D4650' }}
+                      style={{ color: z.green_rate >= 40 ? '#05AF52' : '#5C5C5C' }}
                     >
                       {pct(z.green_rate, 1)}
                     </td>

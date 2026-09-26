@@ -20,7 +20,7 @@ export default function LeadUnitPanel({ self, planned }: { self: Split; planned:
 
   return (
     <figure>
-      <div ref={holder} className="relative h-[20rem] w-full overflow-hidden border border-hairline bg-white/40 md:h-[26rem]">
+      <div ref={holder} className="relative h-[20rem] w-full overflow-hidden border border-hairline bg-wash md:h-[26rem]">
         {show3d ? (
           <SceneShell
             label="Every company, one cube"
@@ -35,9 +35,9 @@ export default function LeadUnitPanel({ self, planned }: { self: Split; planned:
       </div>
 
       <figcaption className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2">
-        <Key colour="#2E7D4F" label="Green — confirmed diesel user" />
-        <Key colour="#C9B89C" label="Blocked or unresolved" />
-        <Key colour="#B33A3A" label="Dead end" />
+        <Key colour="#05AF52" label="Green — confirmed diesel user" />
+        <Key colour="#C6C6C6" label="Blocked or unresolved" />
+        <Key colour="#8D2635" label="Dead end" />
         <span className="source-line ml-auto">One cube is one company.</span>
       </figcaption>
     </figure>
@@ -75,9 +75,9 @@ function Fallback({ self, planned }: { self: Split; planned: Split }) {
               <span className="tnum text-[0.875rem] text-graphite">{num(total)} companies</span>
             </div>
             <div className="mt-2 flex h-8" style={{ width: `${(total / max) * 100}%` }}>
-              <span style={{ width: `${(r.split.green / total) * 100}%`, backgroundColor: '#2E7D4F' }} />
-              <span style={{ width: `${(r.split.other / total) * 100}%`, backgroundColor: '#C9B89C' }} />
-              <span style={{ width: `${(r.split.dead / total) * 100}%`, backgroundColor: '#B33A3A' }} />
+              <span style={{ width: `${(r.split.green / total) * 100}%`, backgroundColor: '#05AF52' }} />
+              <span style={{ width: `${(r.split.other / total) * 100}%`, backgroundColor: '#C6C6C6' }} />
+              <span style={{ width: `${(r.split.dead / total) * 100}%`, backgroundColor: '#8D2635' }} />
             </div>
           </div>
         );

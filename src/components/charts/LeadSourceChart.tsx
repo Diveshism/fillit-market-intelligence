@@ -29,18 +29,18 @@ export default function LeadSourceChart({
           The planned prospect list ({planned.n})
         </li>
         <li className="flex items-center gap-2.5 text-[0.8125rem] text-graphite">
-          <span aria-hidden className="inline-block h-3 w-5 bg-[#2E7D4F]" />
+          <span aria-hidden className="inline-block h-3 w-5 bg-[#05AF52]" />
           Self-generated in the field ({self.n})
         </li>
       </ul>
 
       <div className="grid grid-cols-2 gap-8 md:gap-16">
         {measures.map((m, mi) => {
-          const selfColor = m.lowerIsBetter ? '#C91E2C' : '#2E7D4F';
+          const selfColor = m.lowerIsBetter ? '#8D2635' : '#05AF52';
           return (
             <div key={m.label} className="flex flex-col">
               <div className="flex h-60 items-end justify-center gap-4 md:gap-7">
-                <Column value={m.plannedValue} max={max} color="#C9B89C" labelColor="#3D4650" delay={mi * 0.12} />
+                <Column value={m.plannedValue} max={max} color="#C6C6C6" labelColor="#5C5C5C" delay={mi * 0.12} />
                 <Column value={m.selfValue} max={max} color={selfColor} labelColor={selfColor} delay={mi * 0.12 + 0.18} emphasis />
               </div>
               <div className="mt-4 border-t border-hairline pt-3 text-center">

@@ -30,7 +30,7 @@ export default function SupplierShare() {
             <GrowBar
               className="mt-2"
               value={(s.companies / max) * 100}
-              color={highlight ? '#C91E2C' : '#41616F'}
+              color={highlight ? '#8D2635' : '#6B7076'}
               delay={i * 0.06}
             />
             <p className="source-line mt-1.5">{s.note}</p>

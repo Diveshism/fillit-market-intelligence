@@ -10,7 +10,7 @@ import { num, pct } from '@/lib/format';
 export const metadata: Metadata = {
   title: 'Where the litres are',
   description:
-    '60% of measured diesel volume sits in companies scored Cold. The finding that changes the priority list.',
+    '58% of measured diesel volume sits in companies scored Cold. The finding that changes the priority list.',
 };
 
 export default function VolumePage() {
@@ -77,7 +77,7 @@ export default function VolumePage() {
                       <td
                         key={r.status}
                         className="tnum py-3.5 pr-4 text-right font-600"
-                        style={{ color: r.status === 'Cold' ? '#C91E2C' : '#3D4650' }}
+                        style={{ color: r.status === 'Cold' ? '#8D2635' : '#5C5C5C' }}
                       >
                         {pct((r.litres / volume.measured_excl_largest) * 100, 1)}
                       </td>
@@ -128,7 +128,7 @@ export default function VolumePage() {
       {largestAccount && (
         <section className="shell pb-16">
           <Reveal>
-            <div className="border border-hairline bg-white/45 p-7 md:p-9">
+            <div className="border border-hairline bg-wash p-7 md:p-9">
               <div className="flex flex-wrap items-start justify-between gap-6">
                 <div>
                   <p className="eyebrow">The excluded outlier</p>

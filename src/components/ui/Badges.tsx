@@ -8,9 +8,9 @@ import { STATUS_COLOR } from '@/lib/data';
  *   DERIVED   computed from the field data by a stated rule, not read off a sheet
  */
 const CONFIDENCE_STYLE: Record<Confidence, string> = {
-  VERIFIED: 'border-[#2E7D4F] text-[#2E7D4F]',
+  VERIFIED: 'border-[#05AF52] text-[#05AF52]',
   SOURCED: 'border-steel text-steel',
-  DERIVED: 'border-[#D4A537] text-[#9a7620]',
+  DERIVED: 'border-[#E0A020] text-[#b07e12]',
 };
 
 export function ConfidenceBadge({
@@ -44,7 +44,7 @@ export function StatusBadge({
       className={`inline-flex shrink-0 items-center gap-1.5 rounded-[3px] font-600 uppercase tracking-[0.08em] ${
         size === 'sm' ? 'px-1.5 py-[2px] text-[0.625rem]' : 'px-2 py-[3px] text-[0.6875rem]'
       }`}
-      style={{ backgroundColor: color, color: light ? '#242126' : '#F6F4F1' }}
+      style={{ backgroundColor: color, color: light ? '#1A1A1A' : '#FFFFFF' }}
     >
       {status}
     </span>
@@ -66,7 +66,7 @@ export function StatusDot({ status }: { status: Status }) {
 export function Flag({ children, tone = 'neutral' }: { children: React.ReactNode; tone?: 'neutral' | 'green' | 'red' }) {
   const tones = {
     neutral: 'border-hairline bg-transparent text-graphite',
-    green: 'border-[#2E7D4F]/35 bg-[#2E7D4F]/8 text-[#2E7D4F]',
+    green: 'border-[#05AF52]/35 bg-[#05AF52]/8 text-[#05AF52]',
     red: 'border-red/30 bg-red-wash text-red',
   } as const;
   return (

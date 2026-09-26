@@ -3,26 +3,31 @@
 @tailwind utilities;
 
 /* ------------------------------------------------------------------ *
- * Design tokens — FILLIT brand specification
- * (handoff Appendix C, mirrored in fillit_dataset.json → summary.brand)
+ * Design tokens — read from FILLIT's own site, fillit.co, September 2026.
+ * Maroon #8D2635 carries the logo and testimonial cards; #05AF52 is the Connect
+ * Now button; paper is pure white over a faint grid. Cards 16px, buttons 50px.
  * ------------------------------------------------------------------ */
 
 :root {
-  --red: #c91e2c;
-  --red-wash: #fff1f2;
-  --ink: #242126;
-  --graphite: #3d4650;
-  --paper: #f6f4f1;
-  --steel: #41616f;
-  --sand: #c9b89c;
-  --hairline: #d8d3cc;
+  --red: #8d2635;
+  --red-wash: #fbf0f1;
+  --ink: #1A1A1A;
+  --graphite: #5c5c5c;
+  --paper: #ffffff;
+  --wash: #f7f7f7;
+  --red-deep: #8c0000;
+  --green: #05af52;
+  --green-dark: #1da851;
+  --steel: #6b7076;
+  --sand: #c6c6c6;
+  --hairline: #e3e3e3;
 
-  --hot: #2e7d4f;
-  --warm: #7ba05b;
-  --cold: #b8c4a8;
-  --appointment: #d4a537;
-  --revisit: #d07c2e;
-  --invalid: #b33a3a;
+  --hot: #05af52;
+  --warm: #4fbf7f;
+  --cold: #a9dcc0;
+  --appointment: #e0a020;
+  --revisit: #d9772b;
+  --invalid: #8d2635;
 
   --shell: 88rem;
   --gutter: clamp(1.25rem, 4vw, 4rem);
@@ -36,7 +41,7 @@
   body {
     background-color: var(--paper);
     color: var(--ink);
-    font-family: var(--font-inter), 'Source Sans 3', system-ui, sans-serif;
+    font-family: var(--font-poppins), 'Visby CF', Poppins, system-ui, sans-serif;
     font-feature-settings: 'tnum' 1, 'cv05' 1;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -54,7 +59,7 @@
   h2,
   h3,
   h4 {
-    font-family: var(--font-archivo), 'Libre Franklin', Barlow, system-ui, sans-serif;
+    font-family: var(--font-montserrat), Gotham, Montserrat, system-ui, sans-serif;
     letter-spacing: -0.02em;
     text-wrap: balance;
   }
@@ -103,7 +108,7 @@
   }
 
   .display {
-    font-family: var(--font-archivo), 'Libre Franklin', Barlow, sans-serif;
+    font-family: var(--font-montserrat), Gotham, Montserrat, sans-serif;
     font-weight: 700;
     letter-spacing: -0.02em;
     line-height: 1.02;
@@ -117,7 +122,7 @@
 
   /* Takeaway band under a chart — the gain stated in one sentence. */
   .takeaway {
-    border-left: 4px solid var(--hot);
+    border-left: 4px solid var(--green);
     background: var(--red-wash);
     padding: 1rem 1.25rem;
   }
@@ -147,9 +152,9 @@
     inset: 0;
     background: linear-gradient(
       to top,
-      rgb(36 33 38 / 0.92) 0%,
-      rgb(36 33 38 / 0.55) 45%,
-      rgb(36 33 38 / 0.12) 100%
+      rgb(26 26 26 / 0.92) 0%,
+      rgb(26 26 26 / 0.55) 45%,
+      rgb(26 26 26 / 0.12) 100%
     );
   }
 }
@@ -186,6 +191,10 @@
 @media print {
   :root {
     --paper: #ffffff;
+  --wash: #f7f7f7;
+  --red-deep: #8c0000;
+  --green: #05af52;
+  --green-dark: #1da851;
   }
 
   body {

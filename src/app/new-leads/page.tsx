@@ -13,7 +13,7 @@ import { num, pct } from '@/lib/format';
 export const metadata: Metadata = {
   title: 'New leads generated',
   description:
-    '72 leads found by walking in, against the 496-company planned list. 3.3 times the green rate and a third of the dead ends.',
+    '136 leads found by walking in, against the 500-company planned list. 3.5 times the green rate and a third of the dead ends.',
 };
 
 export default function NewLeadsPage() {
@@ -75,7 +75,7 @@ export default function NewLeadsPage() {
             </div>
             <div>
               <dt className="eyebrow">Better than the list</dt>
-              <dd className="display tnum mt-3 text-[clamp(2rem,4vw,3rem)] leading-none text-[#2E7D4F]">
+              <dd className="display tnum mt-3 text-[clamp(2rem,4vw,3rem)] leading-none text-[#05AF52]">
                 {greenMultiple.toFixed(1)}×
               </dd>
               <p className="source-line mt-1">on green rate</p>
@@ -96,7 +96,7 @@ export default function NewLeadsPage() {
         <Reveal>
           <SectionHeading
             eyebrow="Every company, one cube"
-            title="496 addresses we were handed. 72 we found ourselves."
+            title="500 addresses we were handed. 136 we found ourselves."
             standfirst="The block on the right is the list. Most of it is red. The block on the left is what walking in produced."
             confidence="VERIFIED"
           />
@@ -120,7 +120,7 @@ export default function NewLeadsPage() {
               <p className="eyebrow">What that difference means</p>
               <ul className="mt-6 space-y-7">
                 <li className="flex items-baseline gap-5">
-                  <span className="display tnum shrink-0 text-[2rem] leading-none text-[#2E7D4F]">
+                  <span className="display tnum shrink-0 text-[2rem] leading-none text-[#05AF52]">
                     {greenMultiple.toFixed(1)}×
                   </span>
                   <span className="text-[0.9375rem] leading-relaxed text-graphite">
@@ -128,7 +128,7 @@ export default function NewLeadsPage() {
                   </span>
                 </li>
                 <li className="flex items-baseline gap-5">
-                  <span className="display tnum shrink-0 text-[2rem] leading-none text-[#2E7D4F]">
+                  <span className="display tnum shrink-0 text-[2rem] leading-none text-[#05AF52]">
                     {deadMultiple.toFixed(1)}×
                   </span>
                   <span className="text-[0.9375rem] leading-relaxed text-graphite">
@@ -138,7 +138,7 @@ export default function NewLeadsPage() {
                 </li>
                 {marine && (
                   <li className="flex items-baseline gap-5">
-                    <span className="display tnum shrink-0 text-[2rem] leading-none text-[#2E7D4F]">
+                    <span className="display tnum shrink-0 text-[2rem] leading-none text-[#05AF52]">
                       {marine.self_generated}
                     </span>
                     <span className="text-[0.9375rem] leading-relaxed text-graphite">

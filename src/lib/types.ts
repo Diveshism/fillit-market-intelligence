@@ -10,9 +10,17 @@ export type LeadSource = 'Self-generated' | 'Planned list';
 export type Confidence = 'VERIFIED' | 'SOURCED' | 'DERIVED';
 export type ZoneTier = 'work' | 'unlock' | 'stop' | 'covered';
 
-export interface StatusHistoryEntry {
+/**
+ * A visit where the cell colour and the written interest level disagreed.
+ * The written level was applied; the workbook records all 26 of them.
+ */
+export interface Override {
+  company: string;
   date: string | null;
-  status: string;
+  cell_colour: string | null;
+  status_by_colour: string | null;
+  applied: string | null;
+  comments: string | null;
 }
 
 export interface Company {
@@ -25,7 +33,6 @@ export interface Company {
   emirate: string | null;
   contact_person: string | null;
   phone: string | null;
-  direct_number: string | null;
   email: string | null;
   current_supplier: string | null;
   consumption_raw: string | null;
@@ -42,7 +49,8 @@ export interface Company {
   interest_level_written: string | null;
   /** True where the written interest level overrode the cell colour. */
   interest_level_applied: boolean;
-  status_history: StatusHistoryEntry[];
+  /** Dated override events recorded against this company, oldest first. */
+  overrides: Override[];
 }
 
 export interface WeeklyRow {
@@ -96,15 +104,17 @@ export interface Summary {
   qualified: number;
   blocked_or_unresolved: number;
   visited_more_than_once: number;
-  status_changed: number;
-  colour_conflicts: number;
+  interest_overrides: number;
   decision_makers: number;
   self_generated: number;
+  planned_list: number;
   self_generated_green_rate: number;
   planned_list_green_rate: number;
   cafu_mentions: number;
   invalid_wrong_address: number;
   invalid_no_requirement: number;
+  pain_points_recorded: number;
+  named_suppliers: number;
 }
 
 export interface Volume {
@@ -112,6 +122,9 @@ export interface Volume {
   hot: number;
   warm: number;
   cold: number;
+  qualified: number;
+  hot_share_pct: number;
+  warm_share_pct: number;
   cold_share_pct: number;
   companies_with_volume: number;
   largest_account: string;
@@ -139,5 +152,6 @@ export interface Dataset {
   weekly: WeeklyRow[];
   sectors: SectorRow[];
   zones: ZoneRow[];
+  overrides: Override[];
   companies: Company[];
 }

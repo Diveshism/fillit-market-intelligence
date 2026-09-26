@@ -49,7 +49,7 @@ function Block({
 
   const colour = useMemo(() => {
     const strong = sector.green_rate >= average;
-    return new THREE.Color(strong ? '#2E7D4F' : '#41616F');
+    return new THREE.Color(strong ? '#05AF52' : '#6B7076');
   }, [sector.green_rate, average]);
 
   useFrame((state, delta) => {
@@ -161,7 +161,7 @@ export default function SectorBars({
 
   return (
     <>
-      <color attach="background" args={['#F6F4F1']} />
+      <color attach="background" args={['#FFFFFF']} />
       <ambientLight intensity={0.8} />
       <directionalLight position={[3, 7, 5]} intensity={1.15} castShadow />
       <directionalLight position={[-5, 3, -4]} intensity={0.32} />
@@ -184,13 +184,13 @@ export default function SectorBars({
         {/* One baseline, no gridlines. */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.004, 0]}>
           <planeGeometry args={[span, DEPTH + 0.5]} />
-          <meshBasicMaterial color="#D8D3CC" transparent opacity={0.4} />
+          <meshBasicMaterial color="#E3E3E3" transparent opacity={0.4} />
         </mesh>
 
         {/* The programme-wide green rate, as a single reference line. */}
         <mesh position={[0, averageY, DEPTH / 2 + 0.02]}>
           <boxGeometry args={[span, 0.012, 0.012]} />
-          <meshBasicMaterial color="#C91E2C" />
+          <meshBasicMaterial color="#8D2635" />
         </mesh>
       </group>
 

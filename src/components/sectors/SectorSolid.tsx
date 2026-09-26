@@ -94,7 +94,7 @@ function Fallback({
                 <span className="text-[0.8125rem] text-ink">{s.sector}</span>
                 <span
                   className="tnum shrink-0 text-[0.8125rem] font-600"
-                  style={{ color: s.green_rate >= average ? '#2E7D4F' : '#41616F' }}
+                  style={{ color: s.green_rate >= average ? '#05AF52' : '#6B7076' }}
                 >
                   {pct(s.green_rate, 1)}
                 </span>
@@ -103,7 +103,7 @@ function Fallback({
                 className="mt-1.5"
                 height={10}
                 value={(s.green_rate / maxGreen) * 100}
-                color={s.green_rate >= average ? '#2E7D4F' : '#41616F'}
+                color={s.green_rate >= average ? '#05AF52' : '#6B7076'}
               />
               <span className="source-line mt-1 block">
                 {num(s.companies)} visited · {pct((s.companies / maxCompanies) * 100, 0)} of the

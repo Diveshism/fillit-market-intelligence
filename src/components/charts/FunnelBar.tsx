@@ -53,7 +53,7 @@ export default function FunnelBar({ total, onInk = false }: { total: number; onI
                 {share > 9 && (
                   <span
                     className="pointer-events-none px-3 pb-2 text-[0.6875rem] font-600 uppercase tracking-[0.06em]"
-                    style={{ color: status === 'Cold' ? '#242126' : '#F6F4F1' }}
+                    style={{ color: status === 'Cold' ? '#1A1A1A' : '#FFFFFF' }}
                   >
                     {status}
                   </span>

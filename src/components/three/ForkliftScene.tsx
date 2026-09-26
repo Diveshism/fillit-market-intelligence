@@ -20,9 +20,9 @@ export default function ForkliftScene() {
     rig.current.position.y = Math.sin(state.clock.elapsedTime * 0.7) * 0.035;
   });
 
-  const body = '#C91E2C';
-  const dark = '#242126';
-  const steel = '#41616F';
+  const body = '#8D2635';
+  const dark = '#1A1A1A';
+  const steel = '#6B7076';
 
   return (
     <>
@@ -90,11 +90,11 @@ export default function ForkliftScene() {
           <group key={z}>
             <mesh position={[0.95, 0.28, z]}>
               <boxGeometry args={[0.62, 0.05, 0.13]} />
-              <meshStandardMaterial color="#8d8d8d" roughness={0.35} metalness={0.7} />
+              <meshStandardMaterial color="#8a8a8a" roughness={0.35} metalness={0.7} />
             </mesh>
             <mesh position={[0.68, 0.38, z]}>
               <boxGeometry args={[0.06, 0.24, 0.13]} />
-              <meshStandardMaterial color="#8d8d8d" roughness={0.35} metalness={0.7} />
+              <meshStandardMaterial color="#8a8a8a" roughness={0.35} metalness={0.7} />
             </mesh>
           </group>
         ))}
@@ -115,7 +115,7 @@ export default function ForkliftScene() {
         {/* ground shadow disc */}
         <mesh position={[-0.2, 0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <circleGeometry args={[1.5, 32]} />
-          <meshBasicMaterial color="#242126" transparent opacity={0.07} />
+          <meshBasicMaterial color="#1A1A1A" transparent opacity={0.07} />
         </mesh>
       </group>
     </>

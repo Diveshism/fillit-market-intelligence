@@ -66,9 +66,9 @@ export default function VolumePanel({
 
         <dl className="mt-8 grid grid-cols-3 gap-6 border-t border-hairline pt-6">
           {([
-            ['Hot', volume.hot, averages.hot, '#2E7D4F'],
-            ['Warm', volume.warm, averages.warm, '#7BA05B'],
-            ['Cold', volume.cold, averages.cold, '#8FA37C'],
+            ['Hot', volume.hot, averages.hot, '#05AF52'],
+            ['Warm', volume.warm, averages.warm, '#4FBF7F'],
+            ['Cold', volume.cold, averages.cold, '#7FCB9E'],
           ] as const).map(([label, litres, avg, colour]) => (
             <div key={label}>
               <dt className="eyebrow" style={{ color: colour }}>{label}</dt>
@@ -105,9 +105,9 @@ export default function VolumePanel({
 function FallbackBars({ volume }: { volume: Volume }) {
   const max = Math.max(volume.hot, volume.warm, volume.cold);
   const rows = [
-    { label: 'Hot', value: volume.hot, colour: '#2E7D4F' },
-    { label: 'Warm', value: volume.warm, colour: '#7BA05B' },
-    { label: 'Cold', value: volume.cold, colour: '#B8C4A8' },
+    { label: 'Hot', value: volume.hot, colour: '#05AF52' },
+    { label: 'Warm', value: volume.warm, colour: '#4FBF7F' },
+    { label: 'Cold', value: volume.cold, colour: '#A9DCC0' },
   ];
   return (
     <div className="flex h-full flex-col justify-center gap-6 p-6">

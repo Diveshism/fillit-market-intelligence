@@ -24,8 +24,8 @@ function project(lng: number, lat: number): [number, number] {
 }
 
 /** Green rate → colour. Steel at zero, brand green at the top rate. */
-const LOW = new THREE.Color('#41616F');
-const HIGH = new THREE.Color('#2E7D4F');
+const LOW = new THREE.Color('#6B7076');
+const HIGH = new THREE.Color('#05AF52');
 
 function rateColor(rate: number, maxRate: number): THREE.Color {
   const t = maxRate > 0 ? Math.min(1, rate / maxRate) : 0;
@@ -96,7 +96,7 @@ function Emirates() {
       {slabs.map((slab) => (
         <mesh key={slab.name} geometry={slab.geometry} receiveShadow castShadow>
           <meshStandardMaterial
-            color={slab.covered ? '#E4DFD8' : '#D8D3CC'}
+            color={slab.covered ? '#EDEDED' : '#E3E3E3'}
             roughness={0.94}
             metalness={0}
             polygonOffset
@@ -240,8 +240,8 @@ export default function TerritoryScene({
 
   return (
     <>
-      <color attach="background" args={['#F6F4F1']} />
-      <fog attach="fog" args={['#F6F4F1', 14, 30]} />
+      <color attach="background" args={['#FFFFFF']} />
+      <fog attach="fog" args={['#FFFFFF', 14, 30]} />
 
       <ambientLight intensity={0.78} />
       <directionalLight position={[5, 9, 6]} intensity={1.15} castShadow />

@@ -1,5 +1,5 @@
 import raw from '@/data/fillit.json';
-import type { Company, Dataset, Status, SectorRow, ZoneRow } from './types';
+import type { Company, Dataset, Status, SectorRow, ZoneRow, Override } from './types';
 
 const dataset = raw as unknown as Dataset;
 
@@ -9,6 +9,7 @@ export const volume = dataset.volume;
 export const weekly = dataset.weekly;
 export const sectors: SectorRow[] = dataset.sectors;
 export const zones: ZoneRow[] = dataset.zones;
+export const overrides: Override[] = dataset.overrides;
 export const companies: Company[] = dataset.companies;
 
 const byId = new Map(companies.map((c) => [c.id, c]));
@@ -34,12 +35,12 @@ export const isQualified = (c: Company) => QUALIFIED.includes(c.status);
 export const isBlocked = (c: Company) => BLOCKED.includes(c.status);
 
 export const STATUS_COLOR: Record<Status, string> = {
-  Hot: '#2E7D4F',
-  Warm: '#7BA05B',
-  Cold: '#B8C4A8',
-  Appointment: '#D4A537',
-  Revisit: '#D07C2E',
-  Invalid: '#B33A3A',
+  Hot: '#05AF52',
+  Warm: '#4FBF7F',
+  Cold: '#A9DCC0',
+  Appointment: '#E0A020',
+  Revisit: '#D9772B',
+  Invalid: '#8D2635',
 };
 
 /** Definitions exactly as the deck states them on slide 5. */
@@ -73,6 +74,7 @@ export const blockedCompanies = companies.filter(isBlocked);
 export const selfGenerated = companies.filter((c) => c.lead_source === 'Self-generated');
 export const plannedList = companies.filter((c) => c.lead_source === 'Planned list');
 export const cafuAccounts = companies.filter((c) => c.mentions_cafu);
+export const painPointCompanies = companies.filter((c) => c.pain_points !== null);
 
 /**
  * Companies carrying a parsed monthly volume, largest first.

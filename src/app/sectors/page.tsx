@@ -9,7 +9,7 @@ import { num, pct } from '@/lib/format';
 export const metadata: Metadata = {
   title: 'Industries',
   description:
-    'Metals converted at 65%. Contracting took 37% of the visits and returned 23%. Effort against yield across twelve industries.',
+    'Metals converted at 67%. Contracting took 34% of the visits and returned 24%. Effort against yield across twelve industries.',
 };
 
 export default function SectorsPage() {
@@ -98,7 +98,7 @@ export default function SectorsPage() {
                     <td className="tnum py-3.5 pr-4 text-right text-graphite">{s.self_generated || '—'}</td>
                     <td
                       className="tnum py-3.5 text-right font-600"
-                      style={{ color: s.green_rate >= average ? '#2E7D4F' : '#3D4650' }}
+                      style={{ color: s.green_rate >= average ? '#05AF52' : '#5C5C5C' }}
                     >
                       {pct(s.green_rate, 1)}
                     </td>
@@ -123,7 +123,7 @@ export default function SectorsPage() {
           <ul className="grid gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
             {underworked.map((s) => (
               <li key={s.sector} className="bg-paper p-6">
-                <p className="display tnum text-[2rem] leading-none text-[#2E7D4F]">
+                <p className="display tnum text-[2rem] leading-none text-[#05AF52]">
                   {pct(s.green_rate, 1)}
                 </p>
                 <p className="mt-3 text-[0.9375rem] font-600 leading-tight text-ink">{s.sector}</p>

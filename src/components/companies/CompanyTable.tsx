@@ -142,7 +142,7 @@ export default function CompanyTable({
   function exportCsv() {
     const keys = [
       'company', 'status', 'zone', 'sector', 'emirate', 'location',
-      'contact_person', 'phone', 'direct_number', 'email',
+      'contact_person', 'phone', 'email',
       'current_supplier', 'consumption_raw', 'litres_per_month', 'fleet', 'pain_points',
       'comments', 'first_visit', 'last_visit', 'visits', 'lead_source', 'mentions_cafu',
     ];
@@ -158,7 +158,7 @@ export default function CompanyTable({
 
   return (
     <div>
-      <div className="no-print rounded-[3px] border border-hairline bg-white/45 p-4 md:p-5">
+      <div className="no-print rounded-[3px] border border-hairline bg-wash p-4 md:p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end">
           <div className="flex-1">
             <label htmlFor="company-search" className="eyebrow">Search</label>
@@ -195,7 +195,7 @@ export default function CompanyTable({
                   className={`rounded-[3px] border px-2.5 py-1 text-[0.6875rem] font-600 uppercase tracking-[0.08em] transition-colors ${
                     on ? 'border-transparent text-paper' : 'border-hairline text-graphite hover:border-graphite'
                   }`}
-                  style={on ? { backgroundColor: STATUS_COLOR[s], color: s === 'Cold' ? '#242126' : '#F6F4F1' } : undefined}
+                  style={on ? { backgroundColor: STATUS_COLOR[s], color: s === 'Cold' ? '#1A1A1A' : '#FFFFFF' } : undefined}
                 >
                   {s}
                 </button>

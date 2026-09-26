@@ -17,9 +17,9 @@ import * as THREE from 'three';
  */
 
 const TANKS = [
-  { key: 'Hot', colour: '#2E7D4F', x: -1.75 },
-  { key: 'Warm', colour: '#7BA05B', x: 0 },
-  { key: 'Cold', colour: '#B8C4A8', x: 1.75 },
+  { key: 'Hot', colour: '#05AF52', x: -1.75 },
+  { key: 'Warm', colour: '#4FBF7F', x: 0 },
+  { key: 'Cold', colour: '#A9DCC0', x: 1.75 },
 ] as const;
 
 const MAX_HEIGHT = 3.2;
@@ -71,7 +71,7 @@ function Tank({
       <mesh position={[0, MAX_HEIGHT / 2, 0]}>
         <cylinderGeometry args={[RADIUS, RADIUS, MAX_HEIGHT, 36, 1, true]} />
         <meshStandardMaterial
-          color="#D8D3CC"
+          color="#E3E3E3"
           transparent
           opacity={0.2}
           roughness={0.1}
@@ -82,10 +82,10 @@ function Tank({
 
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[0, RADIUS, 36]} />
-        <meshStandardMaterial color="#D8D3CC" roughness={0.9} side={THREE.DoubleSide} />
+        <meshStandardMaterial color="#E3E3E3" roughness={0.9} side={THREE.DoubleSide} />
       </mesh>
 
-      <Text position={[0, -0.32, 0]} fontSize={0.2} color="#3D4650" anchorX="center" anchorY="middle">
+      <Text position={[0, -0.32, 0]} fontSize={0.2} color="#5C5C5C" anchorX="center" anchorY="middle">
         {label}
       </Text>
     </group>

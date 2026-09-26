@@ -22,7 +22,7 @@ export default function AboutPage() {
     <>
       <PageHeader
         eyebrow="How the research was done"
-        title="Three days at a desk, then six weeks on the road."
+        title="Three days at a desk, then seven weeks on the road."
         standfirst="We began with desk research and cold calls for the first three days only, then moved entirely to in-person field visits."
         confidence="VERIFIED"
       />
@@ -113,7 +113,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="The triage system"
             title="Six outcomes, applied to every record."
-            standfirst={`Where the cell colour and the written interest level disagreed, the written level was used — ${num(summary.colour_conflicts)} records.`}
+            standfirst={`Where the cell colour and the written interest level disagreed, the written level was used — ${num(summary.interest_overrides)} visits across the seven weeks.`}
             confidence="VERIFIED"
           />
 
@@ -296,7 +296,7 @@ export default function AboutPage() {
           <SourceLine>
             This site is generated directly from {meta.generated_from}. Every count, rate, area,
             industry, supplier and volume figure is recomputed from those rows at build time, and the
-            six handed-over lead files are verified against the master on every build.
+            seven handed-over lead files are verified against the master on every build.
           </SourceLine>
         </Reveal>
       </section>

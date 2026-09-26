@@ -9,7 +9,7 @@ import { num, pct } from '@/lib/format';
 
 /**
  * Effort on the left, result on the right — deck slide 11, rebuilt interactively.
- * Effort is the share of the 568 companies visited; result is the green rate.
+ * Effort is the share of the 636 companies visited; result is the green rate.
  * Both wings grow outward from the centre label as the row enters view, and
  * hovering a row dims the others so one industry can be read in isolation.
  */
@@ -32,7 +32,7 @@ export default function SectorTornado({
       <div className="mb-5 grid grid-cols-[1fr_auto_1fr] items-end gap-3 md:gap-6">
         <p className="eyebrow text-right">Companies visited</p>
         <span className="w-32 md:w-60" />
-        <p className="eyebrow text-[#2E7D4F]">Green rate</p>
+        <p className="eyebrow text-[#05AF52]">Green rate</p>
       </div>
 
       <ul className="space-y-4">
@@ -63,7 +63,7 @@ export default function SectorTornado({
                   <GrowSpan
                     className="block h-6 shrink-0"
                     width={`${Math.max(2, (s.companies / maxEffort) * 100)}%`}
-                    color={strong ? '#C9B89C' : '#41616F'}
+                    color={strong ? '#C6C6C6' : '#6B7076'}
                     origin="right"
                     delay={delay}
                   />
@@ -83,12 +83,12 @@ export default function SectorTornado({
                   <GrowSpan
                     className="block h-6 shrink-0"
                     width={`${Math.max(2, (s.green_rate / maxGreen) * 100)}%`}
-                    color={strong ? '#2E7D4F' : '#41616F'}
+                    color={strong ? '#05AF52' : '#6B7076'}
                     delay={delay}
                   />
                   <FadeIn
                     delay={delay + 0.45}
-                    className={`tnum shrink-0 text-[0.875rem] font-600 ${strong ? 'text-[#2E7D4F]' : 'text-graphite'}`}
+                    className={`tnum shrink-0 text-[0.875rem] font-600 ${strong ? 'text-[#05AF52]' : 'text-graphite'}`}
                   >
                     {pct(s.green_rate, 1)}
                   </FadeIn>

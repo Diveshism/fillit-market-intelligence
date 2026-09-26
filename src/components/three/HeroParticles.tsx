@@ -16,16 +16,16 @@ import type { Status } from '@/lib/types';
  * The pointer pushes particles aside as it passes, and the camera eases forward
  * as the bar forms, so the sequence resolves rather than simply ending.
  *
- * Drawn as a single instanced mesh, so 568 particles cost one draw call.
+ * Drawn as a single instanced mesh, so all 636 particles cost one draw call.
  */
 
 const STATUS_COLORS: Record<Status, string> = {
-  Hot: '#2E7D4F',
-  Warm: '#7BA05B',
-  Cold: '#B8C4A8',
-  Appointment: '#D4A537',
-  Revisit: '#D07C2E',
-  Invalid: '#B33A3A',
+  Hot: '#05AF52',
+  Warm: '#4FBF7F',
+  Cold: '#A9DCC0',
+  Appointment: '#E0A020',
+  Revisit: '#D9772B',
+  Invalid: '#8D2635',
 };
 
 const ORDER: Status[] = ['Hot', 'Warm', 'Cold', 'Appointment', 'Revisit', 'Invalid'];
@@ -54,7 +54,7 @@ interface Layouts {
 }
 
 function buildLayouts(counts: Record<Status, number>, total: number): Layouts {
-  const rand = mulberry32(568);
+  const rand = mulberry32(636);
   const cloud = new Float32Array(total * 3);
   const clusters = new Float32Array(total * 3);
   const bar = new Float32Array(total * 3);
@@ -75,7 +75,7 @@ function buildLayouts(counts: Record<Status, number>, total: number): Layouts {
     // Radius grows with the square root of the count, so area reads as quantity.
     const radius = 0.32 + Math.sqrt(n) * 0.085;
 
-    // Bar segment: width proportional to share of the 568.
+    // Bar segment: width proportional to share of the whole book.
     const x0 = -BAR_WIDTH / 2 + (cumulative / total) * BAR_WIDTH;
     const x1 = -BAR_WIDTH / 2 + ((cumulative + n) / total) * BAR_WIDTH;
     cumulative += n;

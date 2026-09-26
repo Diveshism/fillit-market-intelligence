@@ -26,10 +26,10 @@ export function generateMetadata({ params }: { params: { status: string } }): Me
 const NOTE: Record<string, string> = {
   hot: 'Every one of these asked for a quote, a sample or a visit, and each has a named contact on file.',
   warm: 'Using diesel and interested. These need a follow-up, not a pitch.',
-  cold: 'Confirmed diesel users who are not ready to switch. This is where 60% of the measured litres sit.',
+  cold: 'Confirmed diesel users who are not ready to switch. This is where 58% of the measured litres sit.',
   appointment: 'Could not get in. Free zone entry, a booked appointment or a gate pass is what stands in the way.',
   revisit: 'Unresolved rather than rejected. The process stopped; the company did not.',
-  invalid: 'Disqualified — but 117 of these closed on a wrong address rather than on absent demand.',
+  invalid: 'Disqualified — but 125 of these closed on a wrong address rather than on absent demand.',
 };
 
 export default function StatusPage({ params }: { params: { status: string } }) {

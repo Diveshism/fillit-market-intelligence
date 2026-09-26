@@ -35,7 +35,6 @@ export default function CompanyProfile({
   const collection = resolveCollection(searchParams?.from);
   const { prev, next, index, total } = neighbours(collection, company.id);
 
-  const directTel = telHref(company.direct_number);
   const phoneTel = telHref(company.phone);
   const isLargest = company.id === volume.largest_account_id;
 
@@ -119,7 +118,7 @@ export default function CompanyProfile({
           )}
 
           <Panel title="Visit history">
-            <VisitTimeline history={company.status_history} />
+            <VisitTimeline company={company} />
             <p className="source-line mt-5">
               {num(company.visits)} {company.visits === 1 ? 'visit' : 'visits'}
               {company.first_visit ? ` · first ${date(company.first_visit)}` : ''}
@@ -147,11 +146,6 @@ export default function CompanyProfile({
         <aside className="space-y-10 lg:sticky lg:top-24 lg:self-start">
           <Panel title="Contact">
             <Field label="Contact person" value={orNotCaptured(company.contact_person)} />
-            <Field
-              label="Direct number"
-              value={orNotCaptured(company.direct_number)}
-              link={directTel ?? undefined}
-            />
             <Field label="Phone" value={orNotCaptured(company.phone)} link={phoneTel ?? undefined} />
             <Field
               label="Email"

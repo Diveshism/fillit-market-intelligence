@@ -25,7 +25,7 @@ export default function DrillCard({
   return (
     <Link
       href={href}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-[3px] border border-hairline bg-white/45 p-6 transition-all duration-500 ease-entrance hover:-translate-y-0.5 hover:border-graphite/45 md:p-7"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-[3px] border border-hairline bg-wash p-6 transition-all duration-500 ease-entrance hover:-translate-y-0.5 hover:border-graphite/45 md:p-7"
     >
       <span
         aria-hidden

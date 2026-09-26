@@ -107,7 +107,7 @@ export default function TerritoryMap({ zones }: { zones: ZoneRow[] }) {
 
         <ul className="mt-6 space-y-2 text-[0.75rem] text-graphite">
           <li className="flex items-center gap-2.5">
-            <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-[#2E7D4F]" />
+            <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full bg-[#05AF52]" />
             Higher green rate
           </li>
           <li className="flex items-center gap-2.5">

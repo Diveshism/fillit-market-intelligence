@@ -8,18 +8,20 @@ import * as THREE from 'three';
 /**
  * One cube, one company — a 3D unit chart of the two lead sources.
  *
- * The 2D columns beside this show the rates. This shows the actual thing: 496
- * addresses we were handed against 72 we found, every one of them placed and
- * coloured by what it turned into. The planned block is physically seven times
- * the size and mostly red; the self-generated block is small and mostly green.
+ * The 2D columns beside this show the rates. This shows the actual thing: the 500
+ * addresses we were handed against the 136 we found, every one of them placed and
+ * coloured by what it turned into. Both blocks use the same cube at the same pitch
+ * and the same 2:1 aspect, so area reads as quantity: the planned block is nearly
+ * four times the size and mostly red, the self-generated block small and mostly
+ * green.
  *
  * Cubes are sorted so outcomes form horizontal bands, and rise into place from
  * below with a stagger, so the blocks assemble rather than appear.
  */
 
-const GREEN = '#2E7D4F';
-const OTHER = '#C9B89C';
-const DEAD = '#B33A3A';
+const GREEN = '#05AF52';
+const OTHER = '#C6C6C6';
+const DEAD = '#8D2635';
 
 const CUBE = 0.15;
 const PITCH = 0.185;
@@ -112,7 +114,7 @@ function Cubes({
       <Text
         position={[originX + ((block.columns - 1) * PITCH) / 2, -0.42, 0]}
         fontSize={0.19}
-        color="#242126"
+        color="#1A1A1A"
         anchorX="center"
         anchorY="middle"
       >
@@ -121,7 +123,7 @@ function Cubes({
       <Text
         position={[originX + ((block.columns - 1) * PITCH) / 2, -0.68, 0]}
         fontSize={0.14}
-        color="#3D4650"
+        color="#5C5C5C"
         anchorX="center"
         anchorY="middle"
       >
@@ -131,15 +133,18 @@ function Cubes({
   );
 }
 
-export default function LeadUnitChart({
-  self,
-  planned,
-}: {
-  self: { green: number; other: number; dead: number };
-  planned: { green: number; other: number; dead: number };
-}) {
-  const selfBlock: Block = { label: 'Self-generated', columns: 12, ...self };
-  const plannedBlock: Block = { label: 'The planned list', columns: 31, ...planned };
+interface Split {
+  green: number;
+  other: number;
+  dead: number;
+}
+
+export default function LeadUnitChart({ self, planned }: { self: Split; planned: Split }) {
+  // Columns are derived, not fixed, so the blocks stay square-ish and comparable
+  // whatever the counts become: width ≈ 2 × height for both.
+  const cols = (s: Split) => Math.round(Math.sqrt((s.green + s.other + s.dead) * 2));
+  const selfBlock: Block = { label: 'Self-generated', columns: cols(self), ...self };
+  const plannedBlock: Block = { label: 'The planned list', columns: cols(planned), ...planned };
 
   // Bottom-aligned, side by side, at the same cube size — so the size
   // difference between the two blocks is the true one.

@@ -2,12 +2,13 @@
  * Build step — turn the handed-over Excel workbooks into the dataset the site imports.
  *
  * Source of truth: data/submission/FILLIT_Master_Database.xlsx, the workbook handed
- * over with Divesh_Anand_FILLIT_Final.pptx. Every figure on the site is computed from
- * it, or read from its own Summary / Weekly / Sectors / Zones sheets.
+ * over with Divesh_Anand_FILLIT_Final_Presentation.pptx — seven weeks, 743 visits,
+ * 636 companies. Every figure on the site is computed from it, or read from its own
+ * Summary / Weekly / Sectors / Zones sheets.
  *
- * The six lead files (Hot, Warm, Cold, Self-generated, CAFU-affected, Blocked) are
- * cuts of the same master rows, so they are used only to verify that the cuts agree
- * with the master. A mismatch fails the build.
+ * The seven handover cuts (All, Hot, Warm, Cold, Self-generated, CAFU-affected,
+ * Blocked, Pain-point) are slices of the same master rows, so they are used only to
+ * verify that the cuts agree with the master. A mismatch fails the build.
  *
  * Run by `predev` and `prebuild`.
  */
@@ -228,27 +229,34 @@ function isoDate(value) {
 const master = readWorkbook('FILLIT_Master_Database.xlsx');
 const rawCompanies = toObjects(master['All companies']);
 
-if (rawCompanies.length !== 568) {
-  console.error(`build-dataset: expected 568 companies, found ${rawCompanies.length}`);
+if (rawCompanies.length !== 636) {
+  console.error(`build-dataset: expected 636 companies, found ${rawCompanies.length}`);
   process.exit(1);
 }
 
-/* Visit history: "2026-08-27 Revisit | 2026-09-03 Revisit | 2026-09-09 Hot" */
-const historyByCompany = new Map();
-for (const row of toObjects(master['Visit history'])) {
-  const raw = row['Status history (date status)'];
-  if (!raw) continue;
-  const entries = String(raw)
-    .split(/\s*[|;]\s*|\n/)
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .map((part) => {
-      const m = part.match(/(\d{4}-\d{2}-\d{2}|\d{1,2}[/-]\d{1,2}[/-]\d{4})\s*[-—:]?\s*(.+)/);
-      if (!m) return null;
-      return { date: isoDate(m[1]), status: m[2].trim() };
-    })
-    .filter(Boolean);
-  if (entries.length) historyByCompany.set(row.Company, entries);
+/* ------------------------------------------------------------------ *
+ * Interest-level overrides
+ *
+ * Where the cell colour and the written interest level disagreed, the written
+ * level was applied. The workbook lists every one of those visits with its date,
+ * and they are now the only dated events between a company's first and last
+ * visit that it still records — the separate Visit history sheet was dropped in
+ * the seven-week rebuild.
+ * ------------------------------------------------------------------ */
+
+const overrideRows = toObjects(master['Interest level overrides']).map((r) => ({
+  company: r.Company,
+  date: isoDate(r['Visit date']),
+  cell_colour: r['Cell colour'],
+  status_by_colour: r['Status by colour'],
+  applied: r['Interest level applied'],
+  comments: r.Comments,
+}));
+
+const overridesByCompany = new Map();
+for (const row of overrideRows) {
+  if (!overridesByCompany.has(row.company)) overridesByCompany.set(row.company, []);
+  overridesByCompany.get(row.company).push(row);
 }
 
 const ids = new Set();
@@ -263,9 +271,9 @@ const companies = rawCompanies.map((r) => {
   const first = isoDate(r['First visit']);
   const last = isoDate(r['Last visit']);
 
-  const history = historyByCompany.get(r.Company) ?? [
-    { date: last ?? first, status },
-  ];
+  const overrides = (overridesByCompany.get(r.Company) ?? []).sort((x, y) =>
+    String(x.date).localeCompare(String(y.date)),
+  );
 
   return {
     id,
@@ -277,7 +285,6 @@ const companies = rawCompanies.map((r) => {
     emirate: normaliseEmirate(r.Emirate),
     contact_person: r['Contact person'],
     phone: r.Phone,
-    direct_number: r['Direct no.'],
     email: r.Email,
     current_supplier: r['Current supplier'],
     consumption_raw: r['Consumption (as recorded)'],
@@ -293,8 +300,8 @@ const companies = rawCompanies.map((r) => {
     status_by_colour: r['Status by colour'],
     interest_level_written: r['Interest level (written)'],
     /** True where written interest level overrode the cell colour. */
-    interest_level_applied: String(r['Interest level applied'] ?? '').toLowerCase() === 'yes',
-    status_history: history,
+    interest_level_applied: String(r['Interest level applied'] ?? '').trim() !== '',
+    overrides,
   };
 });
 
@@ -304,12 +311,14 @@ const metric = (name) => summaryRows.find((r) => r.Metric === name)?.Value ?? nu
 
 /* ---------- verification against the handed-over cuts ---------- */
 const cuts = [
+  ['FILLIT_All_Companies.xlsx', 'All companies', () => true],
   ['FILLIT_Hot_Leads.xlsx', 'Hot leads', (c) => c.status === 'Hot'],
   ['FILLIT_Warm_Leads.xlsx', 'Warm leads', (c) => c.status === 'Warm'],
   ['FILLIT_Cold_Leads.xlsx', 'Cold leads', (c) => c.status === 'Cold'],
   ['FILLIT_Self_Generated_Leads.xlsx', 'Self-generated leads', (c) => c.lead_source === 'Self-generated'],
   ['FILLIT_CAFU_Affected_Accounts.xlsx', 'CAFU mentions', (c) => c.mentions_cafu],
   ['FILLIT_Blocked_and_Revisit.xlsx', 'Appointment and revisit', (c) => c.status === 'Appointment' || c.status === 'Revisit'],
+  ['FILLIT_Pain_Point_Companies.xlsx', 'Pain point companies', (c) => c.pain_points !== null],
 ];
 
 const checks = [];
@@ -384,16 +393,19 @@ const warmVolume = volumeByStatus('Warm');
 const coldVolume = volumeByStatus('Cold');
 const measured = hotVolume + warmVolume + coldVolume;
 
+/** Hot + Warm, the deck's "qualified demand" — 814,499 L a month on slide 19. */
+const qualifiedVolume = hotVolume + warmVolume;
+
 const dataset = {
   meta: {
     author: 'Divesh Anand',
     role: 'Market Research Intern',
     team: 'Vision Crafters',
     company: 'FILLIT Diesel Trading LLC',
-    field_period: '7 August – 17 September 2026',
-    weeks: 6,
+    field_period: '7 August – 24 September 2026',
+    weeks: 7,
     emirates: ['Dubai', 'Sharjah', 'Ajman', 'Umm Al Quwain'],
-    source: 'Combined_week1-week5.xlsx and Combined_week6.xlsx',
+    source: 'Combined_week1-week5.xlsx, Combined_week6.xlsx and Combined_Week_7.xlsx',
     generated_from: 'FILLIT_Master_Database.xlsx',
   },
   summary: {
@@ -408,22 +420,27 @@ const dataset = {
     diesel_users: metric('Confirmed diesel users'),
     qualified: metric('Qualified'),
     blocked_or_unresolved: metric('Blocked or unresolved'),
-    visited_more_than_once: metric('Companies visited more than once'),
-    status_changed: metric('Status changed between visits'),
-    colour_conflicts: metric('Colour vs interest level conflicts'),
+    visited_more_than_once: companies.filter((c) => c.visits > 1).length,
+    interest_overrides: metric('Interest-level overrides (colour vs written disagreed)'),
     decision_makers: metric('Named fuel decision-makers'),
-    self_generated: metric('Self-generated leads'),
+    self_generated: metric('Self-generated leads (all 7 weeks)'),
+    planned_list: companies.filter((c) => c.lead_source === 'Planned list').length,
     self_generated_green_rate: percent(metric('Self-generated green rate')),
     planned_list_green_rate: percent(metric('Planned list green rate')),
     cafu_mentions: metric('Companies mentioning CAFU'),
     invalid_wrong_address: metric('Invalid: wrong address'),
     invalid_no_requirement: metric('Invalid: no diesel requirement'),
+    pain_points_recorded: companies.filter((c) => c.pain_points !== null).length,
+    named_suppliers: companies.filter((c) => c.current_supplier !== null).length,
   },
   volume: {
     measured_excl_largest: measured,
     hot: hotVolume,
     warm: warmVolume,
     cold: coldVolume,
+    qualified: qualifiedVolume,
+    hot_share_pct: Number(((hotVolume / measured) * 100).toFixed(1)),
+    warm_share_pct: Number(((warmVolume / measured) * 100).toFixed(1)),
     cold_share_pct: Number(((coldVolume / measured) * 100).toFixed(1)),
     companies_with_volume: withVolume.length,
     largest_account: largest.company,
@@ -431,6 +448,7 @@ const dataset = {
     largest_account_lpm: largest.litres_per_month,
     diesel_price_aed_per_litre: 4.3,
   },
+  overrides: overrideRows,
   weekly,
   sectors,
   zones,
@@ -457,6 +475,17 @@ if (companies.reduce((t, c) => t + c.visits, 0) !== dataset.summary.field_visits
   process.exit(1);
 }
 
+/* The Summary sheet states the volume split independently; the rows must agree. */
+const statedVolume = metric(`Measured volume excl. ${largest.company.split(' ')[0]} Group (L/month)`);
+if (statedVolume !== null && statedVolume !== measured) {
+  console.error(`build-dataset: summary states ${statedVolume} L/month measured, rows give ${measured}`);
+  process.exit(1);
+}
+if (dataset.summary.self_generated !== companies.filter((c) => c.lead_source === 'Self-generated').length) {
+  console.error('build-dataset: self-generated count does not match the Lead source column');
+  process.exit(1);
+}
+
 mkdirSync(dirname(TARGET), { recursive: true });
 writeFileSync(TARGET, JSON.stringify(dataset));
 rmSync(TMP, { recursive: true, force: true });
@@ -464,5 +493,5 @@ rmSync(TMP, { recursive: true, force: true });
 console.log(
   `build-dataset: ${companies.length} companies · ${dataset.summary.field_visits} visits · ` +
     `${measured.toLocaleString('en-GB')} L/month measured (Cold ${dataset.volume.cold_share_pct}%) · ` +
-    `cuts verified — ${checks.join(', ')}`,
+    `overrides ${overrideRows.length} · cuts verified — ${checks.join(', ')}`,
 );
