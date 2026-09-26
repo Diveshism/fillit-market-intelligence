@@ -26,7 +26,7 @@ export default function CompetitionPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Finding 02 · Competitor landscape"
+        eyebrow="Findings 03 and 04 · Competitor landscape"
         title="No supplier owns this market, and CAFU has created a vacuum."
         standfirst={SUPPLIER_SOURCE}
         confidence="VERIFIED"

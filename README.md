@@ -1,7 +1,7 @@
 # FILLIT Market Intelligence
 
-An interactive market intelligence site built on a six-week field research programme
-for FILLIT Diesel Trading LLC — and the drill-down database of all 568 companies
+An interactive market intelligence site built on a seven-week field research programme
+for FILLIT Diesel Trading LLC — and the drill-down database of all 636 companies
 visited.
 
 **Divesh Anand** · Market Research Intern · Team Vision Crafters
@@ -49,35 +49,43 @@ and 588 pages are prerendered at build time, including one for every company.
 ## Where the numbers come from
 
 Everything on this site is generated from **`data/submission/FILLIT_Master_Database.xlsx`**,
-the workbook handed over with `Divesh_Anand_FILLIT_Final.pptx`.
+the workbook handed over with `Divesh_Anand_FILLIT_Final_Presentation.pptx`.
 
 `scripts/build-dataset.mjs` reads it at build time and writes `src/data/fillit.json`.
 No figure is typed into a page by hand: counts, rates, areas, industries, suppliers and
-volumes are all recomputed from the 568 rows, or read from the workbook's own Summary,
+volumes are all recomputed from the 636 rows, or read from the workbook's own Summary,
 Weekly, Sectors and Zones sheets.
+
+An `.xlsx` is a zip, and the script carries its own zip reader (`node:zlib`) rather than
+shelling out to `unzip` — that binary is not present on a stock Windows machine, and the
+build has to run everywhere the site runs.
 
 ### The build verifies itself
 
-The six lead files handed over alongside the master are cuts of the same rows, so the
+The lead files handed over alongside the master are cuts of the same rows, so the
 build uses them as a check. If any cut disagrees with the master, **the build fails**:
 
 | File | Rows | Verified against |
 |---|---|---|
-| `FILLIT_Hot_Leads.xlsx` | 23 | `status === 'Hot'` |
-| `FILLIT_Warm_Leads.xlsx` | 39 | `status === 'Warm'` |
-| `FILLIT_Cold_Leads.xlsx` | 95 | `status === 'Cold'` |
-| `FILLIT_Self_Generated_Leads.xlsx` | 72 | `lead_source === 'Self-generated'` |
+| `FILLIT_All_Companies.xlsx` | 636 | every row |
+| `FILLIT_Hot_Leads.xlsx` | 27 | `status === 'Hot'` |
+| `FILLIT_Warm_Leads.xlsx` | 45 | `status === 'Warm'` |
+| `FILLIT_Cold_Leads.xlsx` | 110 | `status === 'Cold'` |
+| `FILLIT_Self_Generated_Leads.xlsx` | 136 | `lead_source === 'Self-generated'` |
 | `FILLIT_CAFU_Affected_Accounts.xlsx` | 20 | `mentions_cafu` |
-| `FILLIT_Blocked_and_Revisit.xlsx` | 194 | Appointment + Revisit |
+| `FILLIT_Blocked_and_Revisit.xlsx` | 210 | Appointment + Revisit |
+| `FILLIT_Pain_Point_Companies.xlsx` | 43 | `pain_points !== null` |
 
 It also re-derives the status counts from the rows and compares them against the
-Summary sheet, and checks that the per-company visit counts sum to 651.
+Summary sheet, checks that the per-company visit counts sum to 743, gates the measured
+volume against the figure the Summary sheet states independently, and confirms the
+self-generated count matches the Lead source column.
 
 ### Definitions
 
 Taken from the workbook's own Summary sheet:
 
-- **Green / confirmed diesel user** — Hot + Warm + Cold (157)
+- **Green / confirmed diesel user** — Hot + Warm + Cold (182)
 - **Qualified** — Hot + Warm (62)
 - **Blocked or unresolved** — Appointment + Revisit (194)
 - **Dead end** — recorded Invalid
@@ -116,8 +124,8 @@ coordinate fails the build rather than silently disappearing.
 | `/volume` | Finding 01 — 60% of measured litres sit in Cold, with the top 10 Cold accounts |
 | `/companies` | The full database — search, filter, sort, CSV export |
 | `/companies/[status]` | One list per status: hot, warm, cold, appointment, revisit, invalid |
-| `/company/[id]` | Full company profile — 568 of these |
-| `/new-leads` | 72 self-generated leads against the 496-company planned list |
+| `/company/[id]` | Full company profile — 636 of these |
+| `/new-leads` | 136 self-generated leads against the 500-company planned list |
 | `/territory` | Interactive 3D UAE map, every area ranked, where to send the team next |
 | `/sectors` | Effort against yield across twelve industries |
 | `/competition` | Supplier landscape, pricing context, and the 20 CAFU-affected accounts |
@@ -128,7 +136,7 @@ coordinate fails the build rather than silently disappearing.
 
 Every list and profile is deep-linkable and refresh-safe. A profile keeps the list it
 was reached from as its context: `/company/sun-metal-casting-factory?from=hot` renders
-"3 of 23 in Hot companies" with working previous/next through the other 22.
+"3 of 27 in Hot companies" with working previous/next through the other 26.
 
 ---
 
@@ -138,7 +146,7 @@ Four scenes, all lazy-loaded, all with a 2D fallback carrying the same data.
 
 | Scene | File | What it encodes |
 |---|---|---|
-| Hero particle field | `three/HeroParticles.tsx` | 568 instanced particles, one per company, coloured by status. Scroll migrates them from an unordered cloud into six clusters, then into the market-map bar |
+| Hero particle field | `three/HeroParticles.tsx` | 636 instanced particles, one per company, coloured by status. Scroll migrates them from an unordered cloud into six clusters, then into the market-map bar |
 | Territory map | `three/TerritoryScene.tsx` | Emirates extruded from Natural Earth admin-1 geometry. Pillar height = companies visited, colour = green rate |
 | Measured volume | `three/VolumeScene.tsx` | Three tanks, one per status, filled to the litres each holds. Cold is tallest by a wide margin — the finding, on sight |
 | Forklift | `three/ForkliftScene.tsx` | Low-poly forklift built from primitives — no external asset, no licence |
@@ -193,10 +201,25 @@ placed. No imagery is generated.
 
 ## Design system
 
-FILLIT red `#C91E2C` is the only accent and stays under roughly 8% of any viewport.
-Archivo for display, Inter for body, both from Google Fonts. Dark `--ink` sections
-alternate deliberately with light `--paper` content. Status colours match the
-colour-coded triage system used on the field sheets.
+Taken from FILLIT's own site, [fillit.co](https://fillit.co/), read September 2026:
+
+| Token | Value | Where it comes from |
+|---|---|---|
+| `--red` | `#8D2635` | The maroon on FILLIT's logo and testimonial cards |
+| `--red-deep` | `#8C0000` | The start of its 45° panel gradient |
+| `--green` | `#05AF52` | Its Connect Now button |
+| `--paper` / `--wash` | `#FFFFFF` / `#F7F7F7` | Pure white page, grey card surface |
+| `--ink` / `--graphite` | `#1A1A1A` / `#5C5C5C` | Its `#333`/`#666` text pair |
+
+Cards are 16px, buttons are 50px pills, and page headers carry the faint graph-paper
+grid FILLIT lays behind its own hero. FILLIT sets headings in Gotham and body copy in
+Visby CF; both are licensed faces that cannot be redistributed, so **Montserrat** and
+**Poppins** stand in for them. Its logo is used in `public/brand/` in both published
+finishes. Status colours keep the field sheets' green-to-red triage semantics but sit on
+the brand scale — Hot is FILLIT's own green, Invalid its own maroon.
+
+This is an internship report *about* FILLIT, not an official FILLIT publication, and the
+footer says so.
 
 ---
 

@@ -44,7 +44,7 @@ export function PageHeader({
   const reduced = useReducedMotion();
 
   return (
-    <header className="shell pb-10 pt-28 md:pt-36">
+    <header className="grid-paper shell pb-10 pt-28 md:pt-36">
       <div className="flex items-start justify-between gap-6">
         <Eyebrow>{eyebrow}</Eyebrow>
         {confidence && (

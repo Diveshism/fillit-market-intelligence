@@ -13,14 +13,13 @@
  * Run by `predev` and `prebuild`.
  */
 
-import { execSync } from 'node:child_process';
-import { readFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { inflateRawSync } from 'node:zlib';
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const SUBMISSION = resolve(here, '../data/submission');
-const TMP = resolve(here, '../.xlsx-cache');
 const TARGET = resolve(here, '../src/data/fillit.json');
 
 /* ------------------------------------------------------------------ *
@@ -28,7 +27,72 @@ const TARGET = resolve(here, '../src/data/fillit.json');
  *
  * These workbooks are flat value-only sheets with inline strings, so a
  * full spreadsheet library would be a large dependency for three regexes.
+ *
+ * An .xlsx is a zip, and the archive is unpacked here rather than shelled out
+ * to `unzip`: that binary is absent from a stock Windows machine, so the build
+ * has to carry its own reader if it is to run everywhere the site runs.
  * ------------------------------------------------------------------ */
+
+/**
+ * Read a zip archive into a Map of entry name → Buffer.
+ *
+ * Finds the end-of-central-directory record by scanning back from the end,
+ * walks the central directory, then reads each entry's own local header to
+ * locate its data — the local extra field is frequently a different length
+ * from the central one, so it is read rather than assumed.
+ *
+ * Only the two compression methods xlsx writers emit are handled: stored and
+ * deflate.
+ */
+function readZip(file) {
+  const buf = readFileSync(file);
+
+  let eocd = -1;
+  for (let i = buf.length - 22; i >= 0 && i > buf.length - 22 - 0xffff; i -= 1) {
+    if (buf.readUInt32LE(i) === 0x06054b50) {
+      eocd = i;
+      break;
+    }
+  }
+  if (eocd < 0) throw new Error(`not a zip archive: ${file}`);
+
+  const count = buf.readUInt16LE(eocd + 10);
+  let p = buf.readUInt32LE(eocd + 16);
+
+  const entries = new Map();
+  for (let n = 0; n < count; n += 1) {
+    if (buf.readUInt32LE(p) !== 0x02014b50) throw new Error(`bad central directory in ${file}`);
+
+    const method = buf.readUInt16LE(p + 10);
+    const compressedSize = buf.readUInt32LE(p + 20);
+    const nameLen = buf.readUInt16LE(p + 28);
+    const extraLen = buf.readUInt16LE(p + 30);
+    const commentLen = buf.readUInt16LE(p + 32);
+    const localOffset = buf.readUInt32LE(p + 42);
+    const name = buf.toString('utf8', p + 46, p + 46 + nameLen);
+
+    const localNameLen = buf.readUInt16LE(localOffset + 26);
+    const localExtraLen = buf.readUInt16LE(localOffset + 28);
+    const start = localOffset + 30 + localNameLen + localExtraLen;
+    const raw = buf.subarray(start, start + compressedSize);
+
+    entries.set(name, method === 0 ? raw : inflateRawSync(raw));
+    p += 46 + nameLen + extraLen + commentLen;
+  }
+  return entries;
+}
+
+/* Patterns used to pick the workbook apart, named so readWorkbook stays legible. */
+const RE_SI = /<si>([\s\S]*?)<\/si>/g;
+const RE_T = /<t[^>]*>([\s\S]*?)<\/t>/g;
+const RE_REL = /<Relationship\b[^>]*\/>/g;
+const RE_ID = /Id="([^"]*)"/;
+const RE_TARGET = /Target="([^"]*)"/;
+const RE_SHEET = /<sheet\b[^>]*\/>/g;
+const RE_NAME = /name="([^"]*)"/;
+const RE_RID = /r:id="([^"]*)"/;
+const RE_XL_PREFIX = /^\/?xl\//;
+const RE_SLASH = /^\//;
 
 function decode(s) {
   return String(s)
@@ -80,37 +144,38 @@ function parseSheet(xml, shared) {
 }
 
 function readWorkbook(file) {
-  const out = resolve(TMP, file.replace(/\W/g, '_'));
-  rmSync(out, { recursive: true, force: true });
-  mkdirSync(out, { recursive: true });
-  execSync(`unzip -o -q "${resolve(SUBMISSION, file)}" -d "${out}"`);
+  const zip = readZip(resolve(SUBMISSION, file));
+  const text = (name) => {
+    const entry = zip.get(name);
+    return entry ? entry.toString('utf8') : null;
+  };
 
   let shared = [];
-  const sharedPath = resolve(out, 'xl/sharedStrings.xml');
-  if (existsSync(sharedPath)) {
-    shared = [...readFileSync(sharedPath, 'utf8').matchAll(/<si>([\s\S]*?)<\/si>/g)].map((m) =>
-      decode([...m[1].matchAll(/<t[^>]*>([\s\S]*?)<\/t>/g)].map((t) => t[1]).join('')),
+  const sharedXml = text('xl/sharedStrings.xml');
+  if (sharedXml) {
+    shared = [...sharedXml.matchAll(RE_SI)].map((m) =>
+      decode([...m[1].matchAll(RE_T)].map((t) => t[1]).join('')),
     );
   }
 
-  const wb = readFileSync(resolve(out, 'xl/workbook.xml'), 'utf8');
-  const rels = readFileSync(resolve(out, 'xl/_rels/workbook.xml.rels'), 'utf8');
+  const wb = text('xl/workbook.xml');
+  const rels = text('xl/_rels/workbook.xml.rels');
   const relMap = {};
-  for (const r of rels.matchAll(/<Relationship\b[^>]*\/>/g)) {
-    const id = (r[0].match(/Id="([^"]*)"/) || [])[1];
-    const target = (r[0].match(/Target="([^"]*)"/) || [])[1];
+  for (const r of rels.matchAll(RE_REL)) {
+    const id = (r[0].match(RE_ID) || [])[1];
+    const target = (r[0].match(RE_TARGET) || [])[1];
     if (id && target) relMap[id] = target;
   }
 
   const sheets = {};
-  for (const s of wb.matchAll(/<sheet\b[^>]*\/>/g)) {
-    const name = decode((s[0].match(/name="([^"]*)"/) || [])[1] ?? '');
-    const rid = (s[0].match(/r:id="([^"]*)"/) || [])[1];
+  for (const sheet of wb.matchAll(RE_SHEET)) {
+    const name = decode((sheet[0].match(RE_NAME) || [])[1] ?? '');
+    const rid = (sheet[0].match(RE_RID) || [])[1];
     const target = relMap[rid];
     if (!target) continue;
-    const path = resolve(out, 'xl', target.replace(/^\/?xl\//, '').replace(/^\//, ''));
-    if (!existsSync(path)) continue;
-    sheets[name] = parseSheet(readFileSync(path, 'utf8'), shared);
+    const xml = text('xl/' + target.replace(RE_XL_PREFIX, '').replace(RE_SLASH, ''));
+    if (!xml) continue;
+    sheets[name] = parseSheet(xml, shared);
   }
   return sheets;
 }
@@ -488,7 +553,6 @@ if (dataset.summary.self_generated !== companies.filter((c) => c.lead_source ===
 
 mkdirSync(dirname(TARGET), { recursive: true });
 writeFileSync(TARGET, JSON.stringify(dataset));
-rmSync(TMP, { recursive: true, force: true });
 
 console.log(
   `build-dataset: ${companies.length} companies · ${dataset.summary.field_visits} visits · ` +

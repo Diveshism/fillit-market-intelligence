@@ -101,7 +101,7 @@ function Block({
 
       {active && (
         <Html position={[0, target + 0.45, 0]} center distanceFactor={8} style={{ pointerEvents: 'none' }}>
-          <div className="w-52 border border-hairline bg-paper/97 p-3 shadow-sm">
+          <div className="w-52 border border-hairline bg-paper/95 p-3 shadow-sm">
             <p className="font-display text-[0.8125rem] font-600 leading-tight text-ink">
               {sector.sector}
             </p>

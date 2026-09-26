@@ -192,7 +192,7 @@ function Pillar({
           zIndexRange={[20, 0]}
           style={{ pointerEvents: 'none' }}
         >
-          <div className="w-52 border border-hairline bg-paper/97 p-3 shadow-sm">
+          <div className="w-52 border border-hairline bg-paper/95 p-3 shadow-sm">
             <p className="font-display text-[0.8125rem] font-600 leading-tight text-ink">
               {zone.zone}
             </p>

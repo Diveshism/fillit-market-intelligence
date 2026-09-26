@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -40,7 +41,7 @@ export default function SiteNav() {
   return (
     <header
       className={`no-print fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        lifted ? 'bg-paper/92 backdrop-blur-sm' : 'bg-transparent'
+        lifted ? 'bg-paper/95 backdrop-blur-sm' : 'bg-transparent'
       }`}
     >
       <nav
@@ -49,18 +50,25 @@ export default function SiteNav() {
           lifted ? 'border-b border-hairline' : ''
         }`}
       >
-        <Link
-          href="/"
-          className="group flex items-baseline gap-2.5 font-display text-[0.9375rem] font-700 tracking-display"
-        >
-          <span className={overHero ? 'text-paper' : 'text-ink'}>FILLIT</span>
-          <span className="h-[3px] w-5 translate-y-[-3px] bg-red transition-all duration-300 group-hover:w-8" />
+        {/* FILLIT's own mark, in its two published finishes — white over the
+            dark hero, maroon everywhere else. */}
+        <Link href="/" className="group flex items-center gap-3">
+          <Image
+            src={overHero ? '/brand/fillit-logo-white.webp' : '/brand/fillit-logo.png'}
+            alt="FILLIT"
+            width={198}
+            height={67}
+            priority
+            className="h-8 w-auto"
+          />
           <span
-            className={`text-[0.6875rem] font-medium uppercase tracking-[0.12em] ${
-              overHero ? 'text-paper/70' : 'text-graphite'
+            className={`hidden border-l pl-3 text-[0.6875rem] font-medium uppercase leading-tight tracking-[0.12em] sm:block ${
+              overHero ? 'border-paper/25 text-paper/70' : 'border-hairline text-graphite'
             }`}
           >
-            Market Intelligence
+            Market
+            <br />
+            Intelligence
           </span>
         </Link>
 

@@ -131,8 +131,68 @@
     border-top: 1px solid var(--hairline);
   }
 
+  /*
+   * The faint graph-paper grid fillit.co lays behind its hero. Drawn on a
+   * pointer-transparent overlay so it never interferes with the content, and
+   * faded out downwards so it reads as a header treatment rather than wallpaper.
+   */
+  .grid-paper {
+    position: relative;
+  }
+
+  .grid-paper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgb(0 0 0 / 0.022) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(0 0 0 / 0.022) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+  }
+
+  /* The 45° maroon-to-black wash behind FILLIT's dark panels. */
+  .brand-gradient {
+    background-image: linear-gradient(45deg, var(--red-deep), #000);
+  }
+
+  /* FILLIT's Connect Now button: green, 50px pill, bold. */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 50px;
+    padding: 0.8125rem 1.625rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .pill-green {
+    background: var(--green);
+    color: #fff;
+  }
+
+  .pill-green:hover {
+    background: var(--green-dark);
+  }
+
+  .pill-red {
+    background: var(--red);
+    color: #fff;
+  }
+
+  .pill-red:hover {
+    background: #6e1c28;
+  }
+
   .on-ink {
-    background: var(--ink);
+    background-color: var(--ink);
     color: var(--paper);
   }
 

@@ -1,13 +1,21 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { meta, summary } from '@/lib/data';
 import { num } from '@/lib/format';
 
 export default function SiteFooter() {
   return (
-    <footer className="on-ink">
+    <footer className="on-ink brand-gradient">
       <div className="shell py-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
+            <Image
+              src="/brand/fillit-logo-white.webp"
+              alt="FILLIT"
+              width={270}
+              height={91}
+              className="mb-6 h-9 w-auto"
+            />
             <p className="eyebrow">{meta.role} · {meta.team}</p>
             <p className="mt-4 max-w-md font-display text-2xl font-600 leading-[1.15] tracking-display">
               {num(summary.companies)} companies visited across the UAE industrial corridors.
@@ -44,6 +52,10 @@ export default function SiteFooter() {
         <div className="hairline-rule mt-12 flex flex-col gap-3 pt-6 text-xs text-paper/55 sm:flex-row sm:items-center sm:justify-between">
           <p>{meta.author} · {meta.role}</p>
           <p>All figures from {meta.source}, {meta.field_period}.</p>
+          <p className="sm:max-w-xs">
+            An internship report about FILLIT Diesel Trading LLC. Not an official FILLIT
+            publication.
+          </p>
         </div>
       </div>
     </footer>

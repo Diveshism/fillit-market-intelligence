@@ -80,7 +80,7 @@ export default function RecommendationsPage() {
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/companies/hot"
-              className="inline-flex items-center gap-2 border border-ink px-4 py-2 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-ink transition-colors hover:bg-ink hover:text-paper"
+              className="pill pill-green"
             >
               Open the 27 Hot leads
             </Link>

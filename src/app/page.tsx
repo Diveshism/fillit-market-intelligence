@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {
-  summary, volume, weekly, averageLitres, companies,
+  summary, volume, weekly, averageLitres, companies, meta,
 } from '@/lib/data';
 import {
   FINDINGS, OPPORTUNITIES, OPPORTUNITY_TAKEAWAY, ABOUT_FILLIT, CLOSING_LINE,
@@ -91,7 +91,7 @@ export default function HomePage() {
           </div>
 
           <SourceLine>
-            Source: {`Combined_week1-week5.xlsx and Combined_week6.xlsx, 7 Aug to 17 Sep 2026`} ·
+            Source: {meta.source}, {meta.field_period} ·
             n = {num(total)} unique companies from {num(summary.field_visits)} field visits · each
             company counted once, at its latest status.
           </SourceLine>
@@ -205,13 +205,13 @@ export default function HomePage() {
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Link
               href="/companies"
-              className="inline-flex items-center gap-2 bg-red px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:bg-[#6e1c28]"
+              className="pill pill-green"
             >
               Open the database
             </Link>
             <Link
               href="/recommendations"
-              className="inline-flex items-center gap-2 border border-paper/30 px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:border-paper"
+              className="pill border border-paper/30 text-paper transition-colors hover:border-paper"
             >
               What we recommend
             </Link>

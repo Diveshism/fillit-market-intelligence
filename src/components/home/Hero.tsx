@@ -49,6 +49,15 @@ export default function Hero({
               'linear-gradient(to top, rgb(26 26 26 / 0.98) 18%, rgb(26 26 26 / 0.88) 48%, rgb(26 26 26 / 0.68) 100%)',
           }}
         />
+        {/* The soft maroon ellipse FILLIT lays behind its own hero headline. */}
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-[70%]"
+          style={{
+            background:
+              'radial-gradient(60% 70% at 30% 85%, rgb(141 38 53 / 0.5) 0%, transparent 70%)',
+          }}
+        />
       </div>
 
       {show3d && (
@@ -104,15 +113,12 @@ export default function Hero({
           </ul>
 
           <div className="mt-12 flex flex-wrap gap-4">
-            <Link
-              href="/companies"
-              className="inline-flex items-center gap-2 bg-red px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:bg-[#6e1c28]"
-            >
+            <Link href="/companies" className="pill pill-green">
               Open the database
             </Link>
             <Link
               href="/volume"
-              className="inline-flex items-center gap-2 border border-paper/30 px-5 py-3 text-[0.75rem] font-600 uppercase tracking-[0.1em] text-paper transition-colors hover:border-paper"
+              className="pill border border-paper/30 text-paper transition-colors hover:border-paper"
             >
               The finding that changes the list
             </Link>

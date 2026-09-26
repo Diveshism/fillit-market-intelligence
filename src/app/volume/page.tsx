@@ -29,7 +29,7 @@ export default function VolumePage() {
   return (
     <>
       <PageHeader
-        eyebrow="Finding 01 · The finding that changes the priority list"
+        eyebrow="Finding 02 · The finding that changes the priority list"
         title="Our own lead scoring was pointing at the wrong companies."
         standfirst={`Across the ${num(volume.companies_with_volume - 1)} Hot, Warm and Cold companies whose consumption converts to litres per month, excluding one outlier account.`}
         confidence="VERIFIED"
